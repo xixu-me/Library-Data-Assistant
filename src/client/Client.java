@@ -21,11 +21,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import client.crawling.Book;
-import client.crawling.Driver;
 import server.tools.DBConnection;
 import server.tools.ExportToCSV;
 import server.tools.ExportToXLS;
+import server.tools.crawling.Book;
+import server.tools.crawling.Driver;
 import server.vo.User;
 
 public class Client {

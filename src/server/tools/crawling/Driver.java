@@ -1,4 +1,4 @@
-package client.crawling;
+package server.tools.crawling;
 
 public class Driver {
     public static void crawl() {

@@ -1,4 +1,4 @@
-package client.crawling;
+package server.tools.crawling;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
