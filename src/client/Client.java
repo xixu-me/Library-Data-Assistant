@@ -187,7 +187,6 @@ public class Client {
 		return response;
 	}
 
-	// 修改密码
 	public static void display() {
 		String sql = "select * from book limit 10";
 		try {
@@ -213,14 +212,13 @@ public class Client {
 
 	}
 
-	// 从键盘输入
 	public static void query() {
 		String sql = null;
 		System.out.println("======查询图书=======");
 		System.out.println("1.按名称查询");
-		System.out.println("2.按作者查询"); // 需要增加二级菜单：【键盘录入，网页爬取，txt文件导入，xls文件导入】
-		System.out.println("3.按出版社查询"); // 按key修改其他字段
-		System.out.println("4.按价格查询"); // 按key删除记录
+		System.out.println("2.按作者查询");
+		System.out.println("3.按出版社查询");
+		System.out.println("4.按价格查询");
 		System.out.println("5.退出");
 		System.out.println("请输入选项(1-5):");
 		Scanner scanner = new Scanner(System.in);
@@ -255,14 +253,13 @@ public class Client {
 	public static void outputQuery(String sql) {
 		Scanner scanner = new Scanner(System.in);
 		String title, author, pubilsher, oldprice, newprice, url;
-		String tianchong = null;
-		tianchong = scanner.next();
+		String inquire = scanner.next();
 		// Connection con = DBConnection.getConnection();
 		// PreparedStatement ps =null;
 		// ResultSet rs=null;
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, '%' + tianchong + '%');
+			ps.setString(1, '%' + inquire + '%');
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				title = rs.getString(1);
