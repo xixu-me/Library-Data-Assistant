@@ -37,7 +37,7 @@ public class Client {
 	public static PrintWriter write; // 字符输出流
 	public static User currentUser; // 当前登录用户
 
-	public static Connection con = DBConnection.getConnection();
+	public static Connection con = null;
 	public static PreparedStatement ps = null;
 	public static Statement statement = null;
 	public static ResultSet rs = null;
@@ -188,6 +188,7 @@ public class Client {
 	}
 
 	public static void display() {
+		con = DBConnection.getConnection();
 		String sql = "select * from book limit 10";
 		try {
 			statement = con.createStatement();
@@ -209,7 +210,21 @@ public class Client {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		DBConnection.close(con, ps);
 	}
 
 	public static void query() {
@@ -221,9 +236,8 @@ public class Client {
 		System.out.println("4.按价格查询");
 		System.out.println("5.退出");
 		System.out.println("请输入选项(1-5):");
-		Scanner scanner = new Scanner(System.in);
 		int n = 0;
-		n = scanner.nextInt();
+		n = scan.nextInt();
 		switch (n) {
 			case 1:// 名称查询
 				sql = "select * from book where title like ?";
@@ -251,9 +265,9 @@ public class Client {
 	}
 
 	public static void outputQuery(String sql) {
-		Scanner scanner = new Scanner(System.in);
+		con = DBConnection.getConnection();
 		String title, author, pubilsher, oldprice, newprice, url;
-		String inquire = scanner.next();
+		String inquire = scan.next();
 		// Connection con = DBConnection.getConnection();
 		// PreparedStatement ps =null;
 		// ResultSet rs=null;
@@ -276,76 +290,73 @@ public class Client {
 				System.out.println("详情地址:" + url);
 			}
 			rs.close();
-			DBConnection.close(con, ps);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		DBConnection.close(con, ps);
 	}
 
 	public static void delete() {
+		con = DBConnection.getConnection();
 		System.out.println("请输入书名");
-		Scanner sc = new Scanner(System.in);
-		String bookname = sc.next();
+		String bookname = scan.next();
 		String sql = "delete from book where title like ?";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, '%' + bookname + '%');
 			ps.executeUpdate();
-			DBConnection.close(con, ps);
 			System.out.println("删除成功");
 		} catch (Exception e) {
 			System.err.println("删除失败");
 		}
+		DBConnection.close(con, ps);
 	}
 
 	public static void update() {
+		con = DBConnection.getConnection();
 		String sql = null;
-		Scanner sc = new Scanner(System.in);
 		System.out.println("======修改图书=======");
 		System.out.println("1.修改作者姓名");
 		System.out.println("2.修改出版社"); // 需要增加二级菜单：【键盘录入，网页爬取，txt文件导入，xls文件导入】
 		System.out.println("3.修改价格"); // 按key修改其他字段
 		System.out.println("4.退出");
 		System.out.println("请输入需要修改的图书的名称");
-		String title = sc.next();
+		String title = scan.next();
 
 		System.out.println("请输入选项(1-4):");
-		Scanner scanner = new Scanner(System.in);
 		int n = 0;
-		n = scanner.nextInt();
+		n = scan.nextInt();
 		String name = null;
 		switch (n) {
 			case 1://
 				System.out.println("请输入修改后的作责姓名");
-				name = sc.next();
+				name = scan.next();
 				sql = "update book set author = ? where title = ?";
 				try {
 					ps = con.prepareStatement(sql);
 					ps.setString(1, name);
 					ps.setString(2, title);
 					ps.executeUpdate();
-					DBConnection.close(con, ps);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				break;
 			case 2:
 				System.out.println("请输入修改后的出版社名");
-				name = sc.next();
+				name = scan.next();
 				sql = "update book set publisher = ? where title = ?";
 				try {
 					ps = con.prepareStatement(sql);
 					ps.setString(1, name);
 					ps.setString(2, title);
 					ps.executeUpdate();
-					DBConnection.close(con, ps);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				break;
 			case 3:
 				System.out.println("请输入修改后的价格");
-				name = sc.next();
+				name = scan.next();
 				sql = "update book set oldprice = newprice where title = ?";
 				String sql2 = "update book set newprice = ? where title = ?";
 				try {
@@ -356,7 +367,6 @@ public class Client {
 					ps.setString(1, name);
 					ps.setString(2, title);
 					ps.executeUpdate();
-					DBConnection.close(con, ps);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -364,5 +374,6 @@ public class Client {
 			default:
 				break;
 		}
+		DBConnection.close(con, ps);
 	}
 }
