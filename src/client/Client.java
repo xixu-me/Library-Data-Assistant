@@ -160,7 +160,7 @@ public class Client {
 
 	// 显示操作界面，返回用户的选择1，2，.....
 	public static int menu() {
-		System.out.println("======图书管理系统=======");
+		System.out.println("======图书数据助理系统=======");
 		System.out.println("作者:****&******");
 		System.out.println("当前用户：" + currentUser.getName());
 		System.out.println("1.图书信息现实");
