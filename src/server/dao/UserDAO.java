@@ -15,7 +15,7 @@ public class UserDAO {
 		// 获取连接
 		Connection con = DBConnection.getConnection();
 		// 操作对应sql语句，支持参数
-		String sql = "select * from t_users where userName=?";
+		String sql = "select * from user where userName=?";
 		// 创建语句对象
 		PreparedStatement pst = con.prepareStatement(sql);
 		// 对sql语句的？参数进行赋值
