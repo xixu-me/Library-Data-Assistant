@@ -103,7 +103,7 @@ public class HandleThread extends Thread {
 		// 解析json字符串，str中的存放的是输入的用户名，密码信息的json格式字符串,使用Gson包将其直接转换为User对象
 		User loginUser = new Gson().fromJson(str, User.class);
 		// 调用DAO，按用户名查询数据库，返回查询结果
-		User user = UserDAO.get(loginUser.getName());
+		User user = UserDAO.get(loginUser.getUserName());
 		/**
 		 * 根据dao执行结果，给出相应的响应，需要设计响应字符串的协议格式 如可以这样设计：*{code:0
 		 * 1，data:****}
