@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import server.dao.UserDAO;
-import server.tools.Encoding;
 import server.vo.User;
 
 public class HandleThread extends Thread {
@@ -117,7 +116,7 @@ public class HandleThread extends Thread {
 			map.put("data", "用户名不存在");
 			responseData = new Gson().toJson(map); // 将java的map对象直接转换成json字符串
 		} else { // 有该用户，进一步密码是否正确
-			if (Encoding.md5(loginUser.getPassword()).equals(user.getPassword())) { // 用户名密码正确
+			if (loginUser.getPassword().equals(user.getPassword())) { // 用户名密码正确
 				Map<String, Object> map = new HashMap<>();
 				map.put("code", 1);
 				map.put("data", new Gson().toJson(user)); // 使用toJson方法可以将java的vo对象直接转换成json字符串
