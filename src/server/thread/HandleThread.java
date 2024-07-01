@@ -36,7 +36,7 @@ public class HandleThread extends Thread {
 			OutputStream os = socket.getOutputStream();
 			write = new PrintWriter(new OutputStreamWriter(os, "utf-8"));
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}
@@ -77,7 +77,7 @@ public class HandleThread extends Thread {
 				write.flush();
 
 			} catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}
 
 		}

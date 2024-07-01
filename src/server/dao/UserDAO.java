@@ -37,7 +37,7 @@ public class UserDAO {
 
 	// 按任意条件组合查询，将查询结果存放在集合中【因为可能有多条】
 	public static ArrayList<User> query(User userCondition) throws Exception {
-		ArrayList<User> list = new ArrayList();
+		ArrayList<User> list = new ArrayList<User>();
 		// 获取连接
 		Connection con = DBConnection.getConnection();
 		// 操作对应sql语句
