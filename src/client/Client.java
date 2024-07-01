@@ -31,7 +31,7 @@ public class Client {
 	// 主方法
 	public static void main(String[] args) throws Exception, IOException {
 		String ip = "127.0.0.1"; // 服务器IP
-		int port = 1234; // 服务器程序的端口
+		int port = 9999; // 服务器程序的端口
 		// 1.建立与服务器的连接
 		socket = new Socket(ip, port);
 		// 获取输入流
