@@ -9,7 +9,7 @@ public class Server {
 
 	public static void main(String[] args) throws Exception {
 		// 创建服务器
-		int port = 1234;
+		int port = 9999;
 		ServerSocket server = new ServerSocket(port);
 		System.out.println("服务器正在1234端口侦听客户端请求");
 		// 循环等待客户端请求
