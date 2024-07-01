@@ -161,9 +161,8 @@ public class Client {
 	// 显示操作界面，返回用户的选择1，2，.....
 	public static int menu() {
 		System.out.println("======图书数据助理系统=======");
-		System.out.println("作者:****&******");
 		System.out.println("当前用户：" + currentUser.getName());
-		System.out.println("1.图书信息现实");
+		System.out.println("1.图书信息显示");
 		System.out.println("2.当当网站爬取"); // 需要增加二级菜单：【键盘录入，网页爬取，txt文件导入，xls文件导入】
 		System.out.println("3.查询"); // 按key修改其他字段
 		System.out.println("4.删除"); // 按key删除记录
@@ -194,7 +193,6 @@ public class Client {
 		try {
 			statement = con.createStatement();
 			rs = statement.executeQuery(sql);
-			System.out.println(111);
 			while (rs.next()) {
 				// System.out.println(rs.getString(1));
 				Book book = new Book();
