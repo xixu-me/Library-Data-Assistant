@@ -1,4 +1,4 @@
-package pa.dangdang;
+package client.crawling;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import pa.tools.CrawlerTools;
 import server.tools.DBConnection;
 
 public class NewsThread implements Runnable {

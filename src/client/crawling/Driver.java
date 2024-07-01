@@ -1,4 +1,4 @@
-package pa.dangdang;
+package client.crawling;
 
 public class Driver {
     public static void crawl() {

@@ -1,4 +1,4 @@
-package pa.dangdang;
+package client.crawling;
 
 public class Book {
 
