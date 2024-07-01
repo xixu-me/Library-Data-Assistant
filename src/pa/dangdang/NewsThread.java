@@ -64,7 +64,7 @@ public class NewsThread implements Runnable {
                 ps.setString(6, href);
                 ps.executeUpdate();
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             System.out.println(title);
             System.out.println(author);
@@ -77,7 +77,7 @@ public class NewsThread implements Runnable {
             ps.close();
             con.close();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

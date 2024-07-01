@@ -1,7 +1,7 @@
 package pa.dangdang;
 
 public class Driver {
-    public static void pashu() {
+    public static void crawl() {
         try {
             String url = "http://bang.dangdang.com/books/bestsellers/01.00.00.00.00.00-24hours-0-0-1-1";
             Thread thread1 = new Thread(new NewsThread(url));
@@ -15,7 +15,7 @@ public class Driver {
                 Thread.sleep(10000);
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }
