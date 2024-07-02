@@ -55,11 +55,6 @@ public class HandleThread extends Thread {
 					case 0:
 						response = loginHandle(data);
 						break;
-					case 1:
-
-						break;
-					case 2:
-						break;
 					default:
 						System.out.println("Invalid command!");
 						break;
