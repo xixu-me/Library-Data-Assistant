@@ -15,7 +15,7 @@ public class ExportToCSV {
                 FileWriter fileWriter = new FileWriter(outputFile)) {
             writeColumnNames(resultSet, fileWriter);
             writeDataRows(resultSet, fileWriter);
-            System.out.println("Data exported successfully to " + outputFile);
+            System.out.println("Data exported successfully to " + outputFile + "!");
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }

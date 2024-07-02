@@ -22,7 +22,7 @@ public class ExportToXLS {
             writeDataRows(sheet, rs);
             workbook.write();
             workbook.close();
-            System.out.println("Data exported successfully to " + outputPath);
+            System.out.println("Data exported successfully to " + outputPath + "!");
         } catch (Exception e) {
             e.printStackTrace();
         }

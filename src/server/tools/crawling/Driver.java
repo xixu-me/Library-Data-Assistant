@@ -19,7 +19,7 @@ public class Driver {
             System.out.println("Crawling finished!");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.err.println("Thread was interrupted, Failed to complete operation");
+            System.err.println("Thread was interrupted, failed to complete operation!");
         } finally {
             executor.shutdown();
             try {

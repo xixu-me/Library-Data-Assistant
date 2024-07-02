@@ -40,7 +40,7 @@ public class Client {
 		try {
 			setupConnection();
 			if (!login()) {
-				System.out.println("Login failed, welcome to visit next time!");
+				System.out.println("Login failed. Welcome to visit next time!");
 				System.exit(0);
 			}
 			handleUserChoices();
@@ -182,7 +182,7 @@ public class Client {
 						rs.getDouble(5), rs.getString(6));
 				System.out.println(book);
 			}
-			System.out.println("Displaying ended.");
+			System.out.println("Displaying ended!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -237,7 +237,7 @@ public class Client {
 					System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + pubilsher
 							+ ", Original Price: " + oldprice + ", Discounted Price: " + newprice + ", URL: " + url);
 				}
-				System.out.println("Querying ended.");
+				System.out.println("Querying ended!");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -248,7 +248,7 @@ public class Client {
 
 	public static void delete() {
 		openConnection();
-		System.out.println("Please enter the title of the book you want to delete:");
+		System.out.println("Please enter the title:");
 		String sql = "delete from book where title = ?";
 		try {
 			ps = con.prepareStatement(sql);
@@ -257,7 +257,7 @@ public class Client {
 			if (affectedRows > 0) {
 				System.out.println("Delete successfully!");
 			} else {
-				System.out.println("No record found to delete.");
+				System.out.println("No record found to delete!");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -329,7 +329,7 @@ public class Client {
 		if (affectedRows > 0) {
 			System.out.println("Price update successful!");
 		} else {
-			System.out.println("No record found to update price.");
+			System.out.println("No record found to update price!");
 		}
 	}
 }
