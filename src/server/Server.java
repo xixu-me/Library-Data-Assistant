@@ -13,7 +13,7 @@ public class Server {
 			System.out.println("Server listening on port " + PORT);
 			while (true) {
 				Socket clientSocket = server.accept();
-				System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
+				System.out.println("Client " + clientSocket.getInetAddress().getHostAddress() + " connected!");
 				new Thread(new HandleThread(clientSocket)).start();
 			}
 		} catch (Exception e) {

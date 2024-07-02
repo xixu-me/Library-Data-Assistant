@@ -40,7 +40,7 @@ public class HandleThread extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("Client " + socket.getInetAddress() + " exited!");
+			System.out.println("Client " + socket.getInetAddress().getHostAddress() + " exited!");
 			closeResources();
 		}
 	}
