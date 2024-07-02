@@ -307,7 +307,7 @@ public class Client {
 		ps.setString(2, title);
 		int affectedRows = ps.executeUpdate();
 		if (affectedRows > 0)
-			System.out.println("Update successful!");
+			System.out.println("Modify successfully!");
 		else
 			System.out.println("No record found to update.");
 	}
@@ -325,7 +325,7 @@ public class Client {
 		ps.setString(2, title);
 		int affectedRows = ps.executeUpdate();
 		if (affectedRows > 0) {
-			System.out.println("Price update successful!");
+			System.out.println("Modify successfully!");
 		} else {
 			System.out.println("No record found to update price!");
 		}
