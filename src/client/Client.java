@@ -89,7 +89,7 @@ public class Client {
 			}
 			choose = menu();
 		}
-		System.out.println("You have exited the program. Welcome to use it next time!");
+		System.out.println("You have exited the assistant. Welcome to visit next time!");
 	}
 
 	public static void close() {
@@ -221,6 +221,7 @@ public class Client {
 					System.out.println("Please enter the price:");
 					break;
 				default:
+					System.out.println("Returning to previous menu.");
 					break;
 			}
 			if (!sql.isEmpty()) {
