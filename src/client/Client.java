@@ -53,7 +53,7 @@ public class Client {
 
 	private static void setupConnection() throws IOException {
 		String ip = "localhost";
-		int port = 9999;
+		int port = 8888;
 		socket = new Socket(ip, port);
 		buf = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
 		write = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"), true);
@@ -79,10 +79,7 @@ public class Client {
 					update();
 					break;
 				case 6:
-					ExportToCSV.to("output.csv", "select * from book");
-					break;
-				case 7:
-					ExportToXLS.to("select * from book", "output.xls");
+					export();
 					break;
 				default:
 					break;
@@ -96,7 +93,8 @@ public class Client {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", 8);
-			write.println(new Gson().toJson(map));
+			if (write != null)
+				write.println(new Gson().toJson(map));
 			if (socket != null)
 				socket.close();
 		} catch (Exception e) {
@@ -144,9 +142,8 @@ public class Client {
 		System.out.println("3. Querying library data;");
 		System.out.println("4. Deleting library data;");
 		System.out.println("5. Modifying library data;");
-		System.out.println("6. Exporting library data to a CSV file;");
-		System.out.println("7. Exporting library data to an XLS file;");
-		System.out.println("8. Exiting Assistant.");
+		System.out.println("6. Exporting library data;");
+		System.out.println("7. Exiting Assistant.");
 		System.out.println("Please enter options (1-8):");
 		int choose = scan.nextInt();
 		scan.nextLine();
@@ -331,6 +328,27 @@ public class Client {
 			System.out.println("Price update successful!");
 		} else {
 			System.out.println("No record found to update price!");
+		}
+	}
+
+	private static void export() {
+		System.out.println("====== Exporting library data =======");
+		System.out.println("1. Exporting to CSV file;");
+		System.out.println("2. Exporting to XLS file;");
+		System.out.println("3. Return to previous menu.");
+		System.out.println("Please enter options (1-3):");
+		int choice = scan.nextInt();
+		scan.nextLine();
+		switch (choice) {
+			case 1:
+				ExportToCSV.to("output.csv", "SELECT * FROM book");
+				break;
+			case 2:
+				ExportToXLS.to("SELECT * FROM book", "output.xls");
+				break;
+			default:
+				System.out.println("Returning to previous menu.");
+				break;
 		}
 	}
 }
