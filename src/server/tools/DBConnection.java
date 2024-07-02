@@ -10,7 +10,6 @@ public class DBConnection {
 	private final static String url = "jdbc:mysql://localhost:3306/lda?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT";
 	private final static String user = "root";
 	private final static String password = "516849";
-
 	static {
 		try {
 			Class.forName(driverName);
@@ -31,12 +30,10 @@ public class DBConnection {
 
 	public static void close(Connection con, PreparedStatement pst) {
 		try {
-			if (pst != null) {
+			if (pst != null)
 				pst.close();
-			}
-			if (con != null) {
+			if (con != null)
 				con.close();
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

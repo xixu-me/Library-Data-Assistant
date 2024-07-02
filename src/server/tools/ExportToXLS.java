@@ -15,10 +15,8 @@ public class ExportToXLS {
         try (Connection connection = DBConnection.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("SELECT * FROM book");) {
-
             WritableWorkbook book = Workbook.createWorkbook(new File("图书信息.xls"));
             WritableSheet sheet = book.createSheet("sheet1", 0);
-
             Label label = new Label(0, 0, "title");
             sheet.addCell(label);
             label = new Label(1, 0, "author");
@@ -39,11 +37,9 @@ public class ExportToXLS {
                 }
                 i++;
             }
-
             book.write();
             book.close();
             System.out.println("Data exported successfully!");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

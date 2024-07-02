@@ -29,13 +29,11 @@ import server.tools.crawling.Driver;
 import server.vo.User;
 
 public class Client {
-
 	public static Scanner scan = new Scanner(System.in);
 	public static Socket socket;
 	public static BufferedReader buf;
 	public static PrintWriter write;
 	public static User currentUser;
-
 	public static Connection con = null;
 	public static PreparedStatement ps = null;
 	public static Statement statement = null;
@@ -44,20 +42,15 @@ public class Client {
 	public static void main(String[] args) throws Exception, IOException {
 		String ip = "127.0.0.1";
 		int port = 9999;
-
 		socket = new Socket(ip, port);
-
 		InputStream is = socket.getInputStream();
 		buf = new BufferedReader(new InputStreamReader(is, "utf-8"));
-
 		OutputStream os = socket.getOutputStream();
 		write = new PrintWriter(new OutputStreamWriter(os, "utf-8"));
-
 		if (!login()) {
 			System.out.println("登录失败，欢迎下次访问");
 			System.exit(0);
 		}
-
 		int choose = menu();
 		while (choose != 8) {
 			switch (choose) {
@@ -87,7 +80,6 @@ public class Client {
 			}
 			choose = menu();
 		}
-
 		close();
 		System.out.println("您已退出程序，欢迎下次使用！");
 	}
@@ -99,25 +91,20 @@ public class Client {
 		System.out.println("发送给服务器：" + sendData);
 		write.println(sendData);
 		write.flush();
-		if (write != null) {
+		if (write != null)
 			write.close();
-		}
-		if (buf != null) {
+		if (buf != null)
 			buf.close();
-		}
-		if (socket != null) {
+		if (socket != null)
 			socket.close();
-		}
 	}
 
 	public static boolean login() throws Exception {
 		for (int i = 1; i <= 3; i++) {
-
 			System.out.println("请输入用户名:");
 			String userName = scan.nextLine();
 			System.out.println("请输入密码:");
 			String passsord = scan.nextLine();
-
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", 0);
 			User user = new User();
@@ -127,30 +114,20 @@ public class Client {
 			map.put("data", gson.toJson(user));
 			String sendData = gson.toJson(map);
 			System.out.println("发送给服务器：" + sendData);
-			/**
-			 * 2.发送数据并接收服务器返回的数据（返回数据也有格式，如可以是以下格式:
-			 * code:0或1，data:****
-			 * code=0表示登录失败，data中存放失败原因
-			 * code=1表示登录成功，data中放当前用户相关的信息（用户名，姓名，角色等）
-			 */
 			String responseData = send(sendData);
 			System.out.println("接收到服务器端的响应：" + responseData);
-
 			JsonElement element = JsonParser.parseString(responseData);
 			JsonObject obj = element.getAsJsonObject();
 			int returnCode = obj.get("code").getAsInt();
 			String returnData = obj.get("data").getAsString();
-			if (returnCode == 0) {
+			if (returnCode == 0)
 				System.out.println("登录失败：" + returnData);
-			} else {
+			else {
 				currentUser = gson.fromJson(returnData, User.class);
 				return true;
 			}
-
 		}
-
 		return false;
-
 	}
 
 	public static int menu() {
@@ -164,18 +141,14 @@ public class Client {
 		System.out.println("6.导出到csv文件");
 		System.out.println("7.导出到xls文件");
 		System.out.println("8.退出");
-
 		System.out.println("请输入选项(1-8):");
 		int choose = scan.nextInt();
-
 		return choose;
 	}
 
 	public static String send(String data) throws Exception {
-
 		write.println(data);
 		write.flush();
-
 		String response = buf.readLine();
 		return response;
 	}
@@ -187,36 +160,30 @@ public class Client {
 			statement = con.createStatement();
 			rs = statement.executeQuery(sql);
 			while (rs.next()) {
-
 				Book book = new Book();
 				book.setTitle(rs.getString(1));
-
 				book.setAuthor(rs.getString(2));
 				book.setPublisher(rs.getString(3));
 				book.setOldprice(rs.getDouble(4));
 				book.setNewprice(rs.getDouble(5));
-
 				book.setHref(rs.getString(6));
-
 				System.out.println(book.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (rs != null) {
+		if (rs != null)
 			try {
 				rs.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		if (statement != null) {
+		if (statement != null)
 			try {
 				statement.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 		DBConnection.close(con, ps);
 	}
 
@@ -261,7 +228,6 @@ public class Client {
 		con = DBConnection.getConnection();
 		String title, author, pubilsher, oldprice, newprice, url;
 		String inquire = scan.next();
-
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, '%' + inquire + '%');
@@ -313,13 +279,12 @@ public class Client {
 		System.out.println("4.退出");
 		System.out.println("请输入需要修改的图书的名称");
 		String title = scan.next();
-
 		System.out.println("请输入选项(1-4):");
 		int n = 0;
 		n = scan.nextInt();
 		String name = null;
 		switch (n) {
-			case 1://
+			case 1:
 				System.out.println("请输入修改后的作责姓名");
 				name = scan.next();
 				sql = "update book set author = ? where title = ?";

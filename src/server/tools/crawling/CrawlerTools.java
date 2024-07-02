@@ -12,55 +12,43 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CrawlerTools {
-
 	public static String get(String urlStr, String charset) {
 		StringBuffer buf = new StringBuffer();
 		HttpURLConnection con = null;
 		InputStream in = null;
 		BufferedReader read = null;
 		try {
-
 			URL url = new URL(urlStr);
 			con = (HttpURLConnection) url.openConnection();
-
 			con.setRequestProperty("User-Agent",
 					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36 Edg/101.0.1210.53");
 			int code = con.getResponseCode();
 			if (code == 200) {
 				in = con.getInputStream();
-
 				read = new BufferedReader(new InputStreamReader(in, charset));
 				String info = "";
-				while ((info = read.readLine()) != null) {
+				while ((info = read.readLine()) != null)
 					buf.append(info);
-				}
-			} else {
+			} else
 				System.out.println("出错：" + code);
-			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (read != null) {
+			if (read != null)
 				try {
 					read.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
-			if (in != null) {
+			if (in != null)
 				try {
 					in.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
-			if (con != null) {
+			if (con != null)
 				con.disconnect();
-			}
-
 		}
-
 		return buf.toString();
 	}
 
@@ -81,5 +69,4 @@ public class CrawlerTools {
 		}
 		return url;
 	}
-
 }

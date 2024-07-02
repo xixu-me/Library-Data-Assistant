@@ -20,20 +20,17 @@ public class NewsThread implements Runnable {
 
     @Override
     public void run() {
-
         String content = CrawlerTools.get(urlPath, "GB2312");
         Document doc = Jsoup.parse(content);
         Elements elements = doc.select(".bang_wrapper .bang_list_box ul li");
         Connection con = DBConnection.getConnection();
         PreparedStatement ps = null;
-
         String sql = null;
         int index = 0;
         for (Element bookelement : elements) {
             index++;
             if (index >= 20)
                 break;
-
             String title = bookelement.select(".name a").text();
             Elements publisherInfoElements = bookelement.select(".publisher_info");
             String author = null;
@@ -43,8 +40,6 @@ public class NewsThread implements Runnable {
                 Element secondPublisherInfoElement = publisherInfoElements.get(1);
                 author = firstPublisherInfoElement.select("a").text();
                 publisher = secondPublisherInfoElement.select("a").text();
-            } else {
-
             }
             String oprice = bookelement.select(".price_r").text();
             String nprice = bookelement.select(".price_n").first().text();
@@ -78,5 +73,4 @@ public class NewsThread implements Runnable {
             e.printStackTrace();
         }
     }
-
 }

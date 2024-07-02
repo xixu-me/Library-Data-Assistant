@@ -9,15 +9,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class Encoding {
-
 	public static String md5(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			byte[] digest = md.digest(password.getBytes());
 			StringBuilder sb = new StringBuilder();
-			for (byte b : digest) {
+			for (byte b : digest)
 				sb.append(String.format("%02x", b));
-			}
 			return sb.toString();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();

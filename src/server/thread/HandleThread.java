@@ -27,26 +27,21 @@ public class HandleThread extends Thread {
 		super();
 		this.socket = socket;
 		try {
-
 			InputStream is = socket.getInputStream();
 			buf = new BufferedReader(new InputStreamReader(is, "utf-8"));
-
 			OutputStream os = socket.getOutputStream();
 			write = new PrintWriter(new OutputStreamWriter(os, "utf-8"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-
 				String receiveStr = buf.readLine();
 				System.out.println("接收到客户端的请求数据:" + receiveStr);
-
 				JsonElement element = JsonParser.parseString(receiveStr);
 				JsonObject obj = element.getAsJsonObject();
 				int code = obj.get("code").getAsInt();
@@ -69,43 +64,27 @@ public class HandleThread extends Thread {
 						System.out.println("命令无效！");
 						break;
 				}
-
 				write.println(response);
 				write.flush();
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
-
 		System.out.println("客户端退出！");
-
 	}
 
 	public void close() throws Exception {
-		if (write != null) {
+		if (write != null)
 			write.close();
-		}
-		if (buf != null) {
+		if (buf != null)
 			buf.close();
-		}
-		if (socket != null) {
+		if (socket != null)
 			socket.close();
-		}
 	}
 
 	public String loginHandle(String str) throws Exception {
-
 		User loginUser = new Gson().fromJson(str, User.class);
-
 		User user = UserDAO.get(loginUser.getUserName());
-		/**
-		 * 根据dao执行结果，给出相应的响应，需要设计响应字符串的协议格式 如可以这样设计：*{code:0
-		 * 1，data:****}
-		 * code=0表示登录失败，data中存放失败原因 code=
-		 * 表示登录成功，data中放当前用户相关的信息（用户名，姓名，角色等）
-		 */
 		String responseData = "";
 		if (user == null) {
 			Map<String, Object> map = new HashMap<>();
@@ -127,5 +106,4 @@ public class HandleThread extends Thread {
 		}
 		return responseData;
 	}
-
 }
