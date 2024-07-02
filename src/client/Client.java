@@ -180,7 +180,7 @@ public class Client {
 			while (rs.next()) {
 				Book book = new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
 						rs.getDouble(5), rs.getString(6));
-				System.out.println(book.toString());
+				System.out.println(book);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
