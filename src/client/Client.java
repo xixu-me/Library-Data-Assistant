@@ -182,6 +182,7 @@ public class Client {
 						rs.getDouble(5), rs.getString(6));
 				System.out.println(book);
 			}
+			System.out.println("Displaying ended.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -236,6 +237,7 @@ public class Client {
 					System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + pubilsher
 							+ ", Original Price: " + oldprice + ", Discounted Price: " + newprice + ", URL: " + url);
 				}
+				System.out.println("Querying ended.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -16,6 +16,7 @@ public class Driver {
                 if (i > 1)
                     TimeUnit.SECONDS.sleep(10);
             }
+            System.out.println("Crawling finished!");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             System.err.println("Thread was interrupted, Failed to complete operation");
