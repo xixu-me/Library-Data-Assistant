@@ -82,6 +82,7 @@ public class Client {
 					export();
 					break;
 				default:
+					System.out.println("Invalid input!");
 					break;
 			}
 			choose = menu();
@@ -217,8 +218,11 @@ public class Client {
 					sql = "SELECT * FROM book WHERE oldprice = ?";
 					System.out.println("Please enter the price:");
 					break;
-				default:
+				case 5:
 					System.out.println("Returning to previous menu.");
+					break;
+				default:
+					System.out.println("Invalid input!");
 					break;
 			}
 			if (!sql.isEmpty()) {
@@ -287,8 +291,11 @@ public class Client {
 				case 3:
 					updatePrice(title);
 					break;
-				default:
+				case 4:
 					System.out.println("Returning to previous menu.");
+					break;
+				default:
+					System.out.println("Invalid input!");
 					break;
 			}
 		} catch (Exception e) {
@@ -346,8 +353,11 @@ public class Client {
 			case 2:
 				ExportToXLS.to("SELECT * FROM book", "output.xls");
 				break;
-			default:
+			case 3:
 				System.out.println("Returning to previous menu.");
+				break;
+			default:
+				System.out.println("Invalid input!");
 				break;
 		}
 	}
