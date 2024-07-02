@@ -165,7 +165,7 @@ public class Client {
 				ps.close();
 			if (statement != null)
 				statement.close();
-			DBConnection.close(con, null);
+			DBConnection.close(con);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -173,7 +173,7 @@ public class Client {
 
 	public static void display() {
 		openConnection();
-		String sql = "select * from book limit 10";
+		String sql = "SELECT * FROM book LIMIT 10";
 		try {
 			statement = con.createStatement();
 			rs = statement.executeQuery(sql);
@@ -196,7 +196,7 @@ public class Client {
 			System.out.println("1. Querying by title;");
 			System.out.println("2. Querying by author;");
 			System.out.println("3. Querying by publisher;");
-			System.out.println("4. Querying by price;");
+			System.out.println("4. Querying by original price;");
 			System.out.println("5. Return to previous menu.");
 			System.out.println("Please enter options (1-5):");
 			int n = scan.nextInt();
@@ -204,19 +204,19 @@ public class Client {
 			String sql = "";
 			switch (n) {
 				case 1:
-					sql = "select * from book where title = ?";
+					sql = "SELECT * FROM book WHERE title = ?";
 					System.out.println("Please enter the title:");
 					break;
 				case 2:
-					sql = "select * from book where author = ?";
+					sql = "SELECT * FROM book WHERE author = ?";
 					System.out.println("Please enter the author:");
 					break;
 				case 3:
-					sql = "select * from book where publisher = ?";
+					sql = "SELECT * FROM book WHERE publisher = ?";
 					System.out.println("Please enter the publisher:");
 					break;
 				case 4:
-					sql = "select * from book where newprice = ?";
+					sql = "SELECT * FROM book WHERE oldprice = ?";
 					System.out.println("Please enter the price:");
 					break;
 				default:
@@ -266,7 +266,7 @@ public class Client {
 
 	public static void update() {
 		try {
-			con = DBConnection.getConnection();
+			openConnection();
 			System.out.println("Please enter the title:");
 			String title = scan.nextLine();
 			System.out.println("====== Modifying library data =======");
@@ -294,7 +294,7 @@ public class Client {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBConnection.close(con, ps);
+			closeResources();
 		}
 	}
 
