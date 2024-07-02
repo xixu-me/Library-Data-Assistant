@@ -61,7 +61,7 @@ public class Client {
 
 	private static void handleUserChoices() throws Exception {
 		int choose = menu();
-		while (choose != 8) {
+		while (choose != 7) {
 			switch (choose) {
 				case 1:
 					display();
@@ -144,7 +144,7 @@ public class Client {
 		System.out.println("5. Modifying library data;");
 		System.out.println("6. Exporting library data;");
 		System.out.println("7. Exiting Assistant.");
-		System.out.println("Please enter options (1-8):");
+		System.out.println("Please enter options (1-7):");
 		int choose = scan.nextInt();
 		scan.nextLine();
 		return choose;
