@@ -13,21 +13,12 @@ public class ExportToCSV {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
                 FileWriter fileWriter = new FileWriter(outputFile)) {
-            writeColumnNames(resultSet, fileWriter);
+            fileWriter.append("Title,Author,Publisher,Original Price,Discounted Price,URL\n");
             writeDataRows(resultSet, fileWriter);
             System.out.println("Data exported successfully to " + outputFile + "!");
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void writeColumnNames(ResultSet resultSet, FileWriter fileWriter) throws SQLException, IOException {
-        for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-            fileWriter.append(resultSet.getMetaData().getColumnName(i));
-            if (i < resultSet.getMetaData().getColumnCount())
-                fileWriter.append(",");
-        }
-        fileWriter.append("\n");
     }
 
     private static void writeDataRows(ResultSet resultSet, FileWriter fileWriter) throws SQLException, IOException {
