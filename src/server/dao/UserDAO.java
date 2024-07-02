@@ -24,7 +24,7 @@ public class UserDAO {
 
 	public static ArrayList<User> query(User userCondition) throws Exception {
 		ArrayList<User> list = new ArrayList<>();
-		String sql = "SELECT * FROM user"; // 示例SQL，实际应根据userCondition调整
+		String sql = "SELECT * FROM usr";
 		try (Connection con = DBConnection.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql);
 				ResultSet rs = pst.executeQuery()) {

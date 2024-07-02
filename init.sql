@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS lda;
 USE lda;
 
 CREATE TABLE IF NOT EXISTS
-    user(
+    usr (
         userName VARCHAR(255) NOT NULL PRIMARY KEY,
         password VARCHAR(255) NOT NULL,
         name VARCHAR(255),
@@ -21,6 +21,6 @@ CREATE TABLE IF NOT EXISTS
     );
 
 INSERT INTO
-    user
+    usr
 VALUES
     ('admin', 'admin', 'admin', 'admin');
