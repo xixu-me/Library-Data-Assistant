@@ -12,7 +12,7 @@ import jxl.write.WritableWorkbook;
 
 public class ExportToXLS {
     public static void to(String query, String outputPath) {
-        String[] columnHeaders = { "title", "author", "publisher", "oldprice", "newprice", "href" };
+        String[] columnHeaders = { "Title", "Author", "Publisher", "Original Price", "Discounted Price", "URL" };
         try (Connection connection = DBConnection.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery(query)) {
