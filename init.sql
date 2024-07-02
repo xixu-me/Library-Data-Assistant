@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS
         publisher VARCHAR(255),
         originalprice DECIMAL(10, 2),
         discountedprice DECIMAL(10, 2),
-        href VARCHAR(255)
+        url VARCHAR(255)
     );
 
 INSERT INTO

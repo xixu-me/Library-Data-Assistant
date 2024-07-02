@@ -6,19 +6,19 @@ public class Book {
     private String publisher;
     private double originalprice;
     private double discountedprice;
-    private String href;
+    private String url;
 
     public Book() {
     }
 
     public Book(String title, String author, String publisher, double originalprice, double discountedprice,
-            String href) {
+            String url) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.originalprice = originalprice;
         this.discountedprice = discountedprice;
-        this.href = href;
+        this.url = url;
     }
 
     public String getTitle() {
@@ -61,18 +61,18 @@ public class Book {
         this.discountedprice = discountedprice;
     }
 
-    public String getHref() {
-        return href;
+    public String getUrl() {
+        return url;
     }
 
-    public void setHref(String href) {
-        this.href = href;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
     public String toString() {
         return "Title: " + this.title + ", Author: " + this.author + ", Publisher: " + this.publisher
                 + ", Original Price: " + this.originalprice + ", Discounted Price: " + this.discountedprice + ", URL: "
-                + this.href;
+                + this.url;
     }
 }
