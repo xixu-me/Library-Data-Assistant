@@ -79,10 +79,10 @@ public class Client {
 					update();
 					break;
 				case 6:
-					ExportToCSV.to();
+					ExportToCSV.to("output.csv", "select * from book");
 					break;
 				case 7:
-					ExportToXLS.to();
+					ExportToXLS.to("select * from book", "output.xls");
 					break;
 				default:
 					break;

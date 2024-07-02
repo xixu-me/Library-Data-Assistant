@@ -2,7 +2,6 @@ package server.tools;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBConnection {
@@ -10,32 +9,32 @@ public class DBConnection {
 	private final static String url = "jdbc:mysql://localhost:3306/lda?allowPublicKeyRetrieval=true&useSSL=false";
 	private final static String user = "root";
 	private final static String password = "516849";
+
 	static {
 		try {
 			Class.forName(driverName);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			throw new ExceptionInInitializerError(e);
 		}
 	}
 
 	public static Connection getConnection() {
-		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(url, user, password);
+			return DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to get database connection", e);
 		}
-		return connection;
 	}
 
-	public static void close(Connection con, PreparedStatement pst) {
-		try {
-			if (pst != null)
-				pst.close();
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public static void close(AutoCloseable... resources) {
+		for (AutoCloseable resource : resources) {
+			if (resource != null) {
+				try {
+					resource.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }

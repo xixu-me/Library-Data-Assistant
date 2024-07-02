@@ -6,14 +6,18 @@ import java.net.Socket;
 import server.thread.HandleThread;
 
 public class Server {
-	public static void main(String[] args) throws Exception {
-		int port = 9999;
-		ServerSocket server = new ServerSocket(port);
-		System.out.println("The server is listening for client connection requests on port " + port + ".");
-		while (true) {
-			Socket socket = server.accept();
-			System.out.println("Client " + socket.getInetAddress().getHostAddress() + " successfully connected!");
-			new HandleThread(socket).start();
+	private static final int PORT = 9999;
+
+	public static void main(String[] args) {
+		try (ServerSocket server = new ServerSocket(PORT)) {
+			System.out.println("Server listening on port " + PORT);
+			while (true) {
+				Socket clientSocket = server.accept();
+				System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
+				new Thread(new HandleThread(clientSocket)).start();
+			}
+		} catch (Exception e) {
+			System.err.println("Server exception: " + e.getMessage());
 		}
 	}
 }

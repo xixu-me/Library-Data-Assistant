@@ -1,19 +1,32 @@
 package server.tools.crawling;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 public class Driver {
+    private static final String URL_PREFIX = "http://bang.dangdang.com/books/bestsellers/01.00.00.00.00.00-24hours-0-0-1-";
+
     public static void crawl() {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
         try {
-            String url = "http://bang.dangdang.com/books/bestsellers/01.00.00.00.00.00-24hours-0-0-1-1";
-            Thread thread1 = new Thread(new NewsThread(url));
-            thread1.start();
-            for (int i = 2; i <= 5; i++) {
-                String url2 = "http://bang.dangdang.com/books/bestsellers/01.00.00.00.00.00-24hours-0-0-1-" + i;
-                Thread thread2 = new Thread(new NewsThread(url2));
-                thread2.start();
-                Thread.sleep(10000);
+            for (int i = 1; i <= 5; i++) {
+                String url = URL_PREFIX + i;
+                executor.submit(new NewsThread(url));
+                if (i > 1)
+                    TimeUnit.SECONDS.sleep(10);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Thread was interrupted, Failed to complete operation");
+        } finally {
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS))
+                    executor.shutdownNow();
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+            }
         }
     }
 }
