@@ -154,181 +154,181 @@ public class Client {
 		return response;
 	}
 
-	public static void display() {
+	private static void openConnection() {
 		con = DBConnection.getConnection();
+	}
+
+	private static void closeResources() {
+		try {
+			if (rs != null)
+				rs.close();
+			if (ps != null)
+				ps.close();
+			if (statement != null)
+				statement.close();
+			DBConnection.close(con, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void display() {
+		openConnection();
 		String sql = "select * from book limit 10";
 		try {
 			statement = con.createStatement();
 			rs = statement.executeQuery(sql);
 			while (rs.next()) {
-				Book book = new Book();
-				book.setTitle(rs.getString(1));
-				book.setAuthor(rs.getString(2));
-				book.setPublisher(rs.getString(3));
-				book.setOldprice(rs.getDouble(4));
-				book.setNewprice(rs.getDouble(5));
-				book.setHref(rs.getString(6));
+				Book book = new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
+						rs.getDouble(5), rs.getString(6));
 				System.out.println(book.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			closeResources();
 		}
-		if (rs != null)
-			try {
-				rs.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		if (statement != null)
-			try {
-				statement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		DBConnection.close(con, ps);
 	}
 
 	public static void query() {
-		String sql = null;
-		System.out.println("====== Querying library data =======");
-		System.out.println("1. Querying by title;");
-		System.out.println("2. Querying by author;");
-		System.out.println("3. Querying by publisher;");
-		System.out.println("4. Querying by price;");
-		System.out.println("5. Return to previous menu.");
-		System.out.println("Please enter options (1-5):");
-		int n = 0;
-		n = scan.nextInt();
-		scan.nextLine();
-		switch (n) {
-			case 1:
-				sql = "select * from book where title = ?";
-				System.out.println("Please enter the title:");
-				outputQuery(sql);
-				break;
-			case 2:
-				sql = "select * from book where author = ?";
-				System.out.println("Please enter the author:");
-				outputQuery(sql);
-				break;
-			case 3:
-				sql = "select * from book where publisher = ?";
-				System.out.println("Please enter the publisher:");
-				outputQuery(sql);
-				break;
-			case 4:
-				sql = "select * from book where newprice = ?";
-				System.out.println("Please enter the price:");
-				outputQuery(sql);
-				break;
-			default:
-				break;
-		}
-	}
-
-	public static void outputQuery(String sql) {
-		con = DBConnection.getConnection();
-		String title, author, pubilsher, oldprice, newprice, url;
-		String inquire = scan.nextLine();
+		openConnection();
 		try {
-			ps = con.prepareStatement(sql);
-			ps.setString(1, inquire);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				title = rs.getString(1);
-				author = rs.getString(2);
-				pubilsher = rs.getString(3);
-				oldprice = rs.getString(4);
-				newprice = rs.getString(5);
-				url = rs.getString(6);
-				System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + pubilsher
-						+ ", Original Price: " + oldprice + ", Discounted Price: " + newprice + ", URL: " + url);
+			System.out.println("====== Querying library data =======");
+			System.out.println("1. Querying by title;");
+			System.out.println("2. Querying by author;");
+			System.out.println("3. Querying by publisher;");
+			System.out.println("4. Querying by price;");
+			System.out.println("5. Return to previous menu.");
+			System.out.println("Please enter options (1-5):");
+			int n = scan.nextInt();
+			scan.nextLine();
+			String sql = "";
+			switch (n) {
+				case 1:
+					sql = "select * from book where title = ?";
+					System.out.println("Please enter the title:");
+					break;
+				case 2:
+					sql = "select * from book where author = ?";
+					System.out.println("Please enter the author:");
+					break;
+				case 3:
+					sql = "select * from book where publisher = ?";
+					System.out.println("Please enter the publisher:");
+					break;
+				case 4:
+					sql = "select * from book where newprice = ?";
+					System.out.println("Please enter the price:");
+					break;
+				default:
+					break;
 			}
-			rs.close();
+			if (!sql.isEmpty()) {
+				ps = con.prepareStatement(sql);
+				ps.setString(1, scan.nextLine());
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					String title = rs.getString(1);
+					String author = rs.getString(2);
+					String pubilsher = rs.getString(3);
+					String oldprice = rs.getString(4);
+					String newprice = rs.getString(5);
+					String url = rs.getString(6);
+					System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + pubilsher
+							+ ", Original Price: " + oldprice + ", Discounted Price: " + newprice + ", URL: " + url);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			closeResources();
 		}
-		DBConnection.close(con, ps);
 	}
 
 	public static void delete() {
-		con = DBConnection.getConnection();
-		System.out.println("Please enter the title:");
-		String title = scan.nextLine();
+		openConnection();
+		System.out.println("Please enter the title of the book you want to delete:");
 		String sql = "delete from book where title = ?";
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, title);
-			ps.executeUpdate();
-			System.out.println("Delete successfully!");
+			ps.setString(1, scan.nextLine());
+			int affectedRows = ps.executeUpdate();
+			if (affectedRows > 0) {
+				System.out.println("Delete successfully!");
+			} else {
+				System.out.println("No record found to delete.");
+			}
 		} catch (Exception e) {
-			System.err.println("Delete failed!");
+			e.printStackTrace();
+		} finally {
+			closeResources();
 		}
-		DBConnection.close(con, ps);
 	}
 
 	public static void update() {
-		con = DBConnection.getConnection();
-		String sql = null;
-		System.out.println("Please enter the title:");
-		String title = scan.nextLine();
-		System.out.println("====== Modifying library data =======");
-		System.out.println("1. Modifying author;");
-		System.out.println("2. Modifying publisher;");
-		System.out.println("3. Modifying price;");
-		System.out.println("4. Return to previous menu.");
-		System.out.println("Please enter options (1-4):");
-		int n = 0;
-		n = scan.nextInt();
-		scan.nextLine();
-		String inquery = null;
-		switch (n) {
-			case 1:
-				System.out.println("Please enter the modified author:");
-				inquery = scan.nextLine();
-				sql = "update book set author = ? where title = ?";
-				try {
-					ps = con.prepareStatement(sql);
-					ps.setString(1, inquery);
-					ps.setString(2, title);
-					ps.executeUpdate();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			case 2:
-				System.out.println("Please enter the modified publisher:");
-				inquery = scan.nextLine();
-				sql = "update book set publisher = ? where title = ?";
-				try {
-					ps = con.prepareStatement(sql);
-					ps.setString(1, inquery);
-					ps.setString(2, title);
-					ps.executeUpdate();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			case 3:
-				System.out.println("Please enter the modified price:");
-				inquery = scan.nextLine();
-				sql = "update book set oldprice = newprice where title = ?";
-				String sql2 = "update book set newprice = ? where title = ?";
-				try {
-					ps = con.prepareStatement(sql);
-					ps.setString(1, title);
-					ps.executeUpdate();
-					ps = con.prepareStatement(sql2);
-					ps.setString(1, inquery);
-					ps.setString(2, title);
-					ps.executeUpdate();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			default:
-				break;
+		try {
+			con = DBConnection.getConnection();
+			System.out.println("Please enter the title:");
+			String title = scan.nextLine();
+			System.out.println("====== Modifying library data =======");
+			System.out.println("1. Modifying author;");
+			System.out.println("2. Modifying publisher;");
+			System.out.println("3. Modifying price;");
+			System.out.println("4. Return to previous menu.");
+			System.out.println("Please enter options (1-4):");
+			int choice = scan.nextInt();
+			scan.nextLine();
+			switch (choice) {
+				case 1:
+					updateField("author", title);
+					break;
+				case 2:
+					updateField("publisher", title);
+					break;
+				case 3:
+					updatePrice(title);
+					break;
+				default:
+					System.out.println("Returning to previous menu.");
+					break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBConnection.close(con, ps);
 		}
-		DBConnection.close(con, ps);
+	}
+
+	private static void updateField(String field, String title) throws Exception {
+		System.out.println("Please enter the modified " + field + ":");
+		String newValue = scan.nextLine();
+		String sql = "UPDATE book SET " + field + " = ? WHERE title = ?";
+		ps = con.prepareStatement(sql);
+		ps.setString(1, newValue);
+		ps.setString(2, title);
+		int affectedRows = ps.executeUpdate();
+		if (affectedRows > 0)
+			System.out.println("Update successful!");
+		else
+			System.out.println("No record found to update.");
+	}
+
+	private static void updatePrice(String title) throws Exception {
+		System.out.println("Please enter the modified price:");
+		String newPrice = scan.nextLine();
+		String sqlUpdateOldPrice = "UPDATE book SET oldprice = newprice WHERE title = ?";
+		ps = con.prepareStatement(sqlUpdateOldPrice);
+		ps.setString(1, title);
+		ps.executeUpdate();
+		String sqlUpdateNewPrice = "UPDATE book SET newprice = ? WHERE title = ?";
+		ps = con.prepareStatement(sqlUpdateNewPrice);
+		ps.setString(1, newPrice);
+		ps.setString(2, title);
+		int affectedRows = ps.executeUpdate();
+		if (affectedRows > 0) {
+			System.out.println("Price update successful!");
+		} else {
+			System.out.println("No record found to update price.");
+		}
 	}
 }
