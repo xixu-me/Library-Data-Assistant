@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS
         publisher VARCHAR(255),
         oldprice DECIMAL(10, 2),
         newprice DECIMAL(10, 2),
-        href VARCHAR(255),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        href VARCHAR(255)
     );
 
 INSERT INTO

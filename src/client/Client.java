@@ -48,7 +48,7 @@ public class Client {
 		OutputStream os = socket.getOutputStream();
 		write = new PrintWriter(new OutputStreamWriter(os, "utf-8"));
 		if (!login()) {
-			System.out.println("登录失败，欢迎下次访问");
+			System.out.println("Login failed, welcome to visit next time!");
 			System.exit(0);
 		}
 		int choose = menu();
@@ -81,14 +81,14 @@ public class Client {
 			choose = menu();
 		}
 		close();
-		System.out.println("您已退出程序，欢迎下次使用！");
+		System.out.println("You have exited the program. Welcome to use it next time!");
 	}
 
 	public static void close() throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("code", 8);
 		String sendData = new Gson().toJson(map);
-		System.out.println("发送给服务器：" + sendData);
+		System.out.println("Send to server: " + sendData);
 		write.println(sendData);
 		write.flush();
 		if (write != null)
@@ -101,9 +101,9 @@ public class Client {
 
 	public static boolean login() throws Exception {
 		for (int i = 1; i <= 3; i++) {
-			System.out.println("请输入用户名:");
+			System.out.println("Please enter your user name:");
 			String userName = scan.nextLine();
-			System.out.println("请输入密码:");
+			System.out.println("Please enter your password:");
 			String passsord = scan.nextLine();
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", 0);
@@ -113,15 +113,15 @@ public class Client {
 			Gson gson = new Gson();
 			map.put("data", gson.toJson(user));
 			String sendData = gson.toJson(map);
-			System.out.println("发送给服务器：" + sendData);
+			System.out.println("Send to server: " + sendData);
 			String responseData = send(sendData);
-			System.out.println("接收到服务器端的响应：" + responseData);
+			System.out.println("Received the response from the server: " + responseData);
 			JsonElement element = JsonParser.parseString(responseData);
 			JsonObject obj = element.getAsJsonObject();
 			int returnCode = obj.get("code").getAsInt();
 			String returnData = obj.get("data").getAsString();
 			if (returnCode == 0)
-				System.out.println("登录失败：" + returnData);
+				System.out.println("Login failed: " + returnData);
 			else {
 				currentUser = gson.fromJson(returnData, User.class);
 				return true;
@@ -131,18 +131,19 @@ public class Client {
 	}
 
 	public static int menu() {
-		System.out.println("======图书数据助理系统=======");
-		System.out.println("当前用户：" + currentUser.getName());
-		System.out.println("1.图书信息显示");
-		System.out.println("2.当当网站爬取");
-		System.out.println("3.查询");
-		System.out.println("4.删除");
-		System.out.println("5.修改");
-		System.out.println("6.导出到csv文件");
-		System.out.println("7.导出到xls文件");
-		System.out.println("8.退出");
-		System.out.println("请输入选项(1-8):");
+		System.out.println("======== Library Data Assistant ========");
+		System.out.println("Current user: " + currentUser.getName());
+		System.out.println("1. Display library data;");
+		System.out.println("2. Crawling library data;");
+		System.out.println("3. Querying library data;");
+		System.out.println("4. Deleting library data;");
+		System.out.println("5. Modifying library data;");
+		System.out.println("6. Exporting library data to a CSV file;");
+		System.out.println("7. Exporting library data to an XLS file;");
+		System.out.println("8. Exiting Assistant.");
+		System.out.println("Please enter options (1-8):");
 		int choose = scan.nextInt();
+		scan.nextLine();
 		return choose;
 	}
 
@@ -189,34 +190,35 @@ public class Client {
 
 	public static void query() {
 		String sql = null;
-		System.out.println("======查询图书=======");
-		System.out.println("1.按名称查询");
-		System.out.println("2.按作者查询");
-		System.out.println("3.按出版社查询");
-		System.out.println("4.按价格查询");
-		System.out.println("5.退出");
-		System.out.println("请输入选项(1-5):");
+		System.out.println("====== Querying library data =======");
+		System.out.println("1. Querying by title;");
+		System.out.println("2. Querying by author;");
+		System.out.println("3. Querying by publisher;");
+		System.out.println("4. Querying by price;");
+		System.out.println("5. Return to previous menu.");
+		System.out.println("Please enter options (1-5):");
 		int n = 0;
 		n = scan.nextInt();
+		scan.nextLine();
 		switch (n) {
 			case 1:
-				sql = "select * from book where title like ?";
-				System.out.println("请输入名称:");
+				sql = "select * from book where title = ?";
+				System.out.println("Please enter the title:");
 				outputQuery(sql);
 				break;
 			case 2:
-				sql = "select * from book where author like ?";
-				System.out.println("请输入作者:");
+				sql = "select * from book where author = ?";
+				System.out.println("Please enter the author:");
 				outputQuery(sql);
 				break;
 			case 3:
-				sql = "select * from book where publisher like ?";
-				System.out.println("请输入出版社:");
+				sql = "select * from book where publisher = ?";
+				System.out.println("Please enter the publisher:");
 				outputQuery(sql);
 				break;
 			case 4:
-				sql = "select * from book where newprice like ?";
-				System.out.println("请输入价格:");
+				sql = "select * from book where newprice = ?";
+				System.out.println("Please enter the price:");
 				outputQuery(sql);
 				break;
 			default:
@@ -227,10 +229,10 @@ public class Client {
 	public static void outputQuery(String sql) {
 		con = DBConnection.getConnection();
 		String title, author, pubilsher, oldprice, newprice, url;
-		String inquire = scan.next();
+		String inquire = scan.nextLine();
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, '%' + inquire + '%');
+			ps.setString(1, inquire);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				title = rs.getString(1);
@@ -239,12 +241,8 @@ public class Client {
 				oldprice = rs.getString(4);
 				newprice = rs.getString(5);
 				url = rs.getString(6);
-				System.out.println("书名:" + title);
-				System.out.println("作者:" + author);
-				System.out.println("出版社:" + pubilsher);
-				System.out.println("原价格:" + oldprice);
-				System.out.println("折后价格:" + newprice);
-				System.out.println("详情地址:" + url);
+				System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + pubilsher
+						+ ", Original Price: " + oldprice + ", Discounted Price: " + newprice + ", URL: " + url);
 			}
 			rs.close();
 		} catch (Exception e) {
@@ -255,16 +253,16 @@ public class Client {
 
 	public static void delete() {
 		con = DBConnection.getConnection();
-		System.out.println("请输入书名");
-		String bookname = scan.next();
-		String sql = "delete from book where title like ?";
+		System.out.println("Please enter the title:");
+		String title = scan.nextLine();
+		String sql = "delete from book where title = ?";
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(1, '%' + bookname + '%');
+			ps.setString(1, title);
 			ps.executeUpdate();
-			System.out.println("删除成功");
+			System.out.println("Delete successfully!");
 		} catch (Exception e) {
-			System.err.println("删除失败");
+			System.err.println("Delete failed!");
 		}
 		DBConnection.close(con, ps);
 	}
@@ -272,25 +270,26 @@ public class Client {
 	public static void update() {
 		con = DBConnection.getConnection();
 		String sql = null;
-		System.out.println("======修改图书=======");
-		System.out.println("1.修改作者姓名");
-		System.out.println("2.修改出版社");
-		System.out.println("3.修改价格");
-		System.out.println("4.退出");
-		System.out.println("请输入需要修改的图书的名称");
-		String title = scan.next();
-		System.out.println("请输入选项(1-4):");
+		System.out.println("Please enter the title:");
+		String title = scan.nextLine();
+		System.out.println("====== Modifying library data =======");
+		System.out.println("1. Modifying author;");
+		System.out.println("2. Modifying publisher;");
+		System.out.println("3. Modifying price;");
+		System.out.println("4. Return to previous menu.");
+		System.out.println("Please enter options (1-4):");
 		int n = 0;
 		n = scan.nextInt();
-		String name = null;
+		scan.nextLine();
+		String inquery = null;
 		switch (n) {
 			case 1:
-				System.out.println("请输入修改后的作责姓名");
-				name = scan.next();
+				System.out.println("Please enter the modified author:");
+				inquery = scan.nextLine();
 				sql = "update book set author = ? where title = ?";
 				try {
 					ps = con.prepareStatement(sql);
-					ps.setString(1, name);
+					ps.setString(1, inquery);
 					ps.setString(2, title);
 					ps.executeUpdate();
 				} catch (Exception e) {
@@ -298,12 +297,12 @@ public class Client {
 				}
 				break;
 			case 2:
-				System.out.println("请输入修改后的出版社名");
-				name = scan.next();
+				System.out.println("Please enter the modified publisher:");
+				inquery = scan.nextLine();
 				sql = "update book set publisher = ? where title = ?";
 				try {
 					ps = con.prepareStatement(sql);
-					ps.setString(1, name);
+					ps.setString(1, inquery);
 					ps.setString(2, title);
 					ps.executeUpdate();
 				} catch (Exception e) {
@@ -311,8 +310,8 @@ public class Client {
 				}
 				break;
 			case 3:
-				System.out.println("请输入修改后的价格");
-				name = scan.next();
+				System.out.println("Please enter the modified price:");
+				inquery = scan.nextLine();
 				sql = "update book set oldprice = newprice where title = ?";
 				String sql2 = "update book set newprice = ? where title = ?";
 				try {
@@ -320,7 +319,7 @@ public class Client {
 					ps.setString(1, title);
 					ps.executeUpdate();
 					ps = con.prepareStatement(sql2);
-					ps.setString(1, name);
+					ps.setString(1, inquery);
 					ps.setString(2, title);
 					ps.executeUpdate();
 				} catch (Exception e) {

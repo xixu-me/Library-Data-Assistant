@@ -41,7 +41,7 @@ public class HandleThread extends Thread {
 		while (true) {
 			try {
 				String receiveStr = buf.readLine();
-				System.out.println("接收到客户端的请求数据:" + receiveStr);
+				System.out.println("Receive the client's request data: " + receiveStr);
 				JsonElement element = JsonParser.parseString(receiveStr);
 				JsonObject obj = element.getAsJsonObject();
 				int code = obj.get("code").getAsInt();
@@ -61,7 +61,7 @@ public class HandleThread extends Thread {
 					case 2:
 						break;
 					default:
-						System.out.println("命令无效！");
+						System.out.println("Invalid command!");
 						break;
 				}
 				write.println(response);
@@ -70,7 +70,7 @@ public class HandleThread extends Thread {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("客户端退出！");
+		System.out.println("Client exited!");
 	}
 
 	public void close() throws Exception {
@@ -89,7 +89,7 @@ public class HandleThread extends Thread {
 		if (user == null) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", 0);
-			map.put("data", "用户名不存在");
+			map.put("data", "Username does not exist!");
 			responseData = new Gson().toJson(map);
 		} else {
 			if (loginUser.getPassword().equals(user.getPassword())) {
@@ -100,7 +100,7 @@ public class HandleThread extends Thread {
 			} else {
 				Map<String, Object> map = new HashMap<>();
 				map.put("code", 0);
-				map.put("data", "密码错误");
+				map.put("data", "Wrong password!");
 				responseData = new Gson().toJson(map);
 			}
 		}

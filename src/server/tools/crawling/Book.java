@@ -69,7 +69,6 @@ public class Book {
     }
 
     public String toString() {
-        return "Book{title = " + title + ", author = " + author + ", publisher = " + publisher + ", oldprice = "
-                + oldprice + ", newprice = " + newprice + ", href = " + href + "}";
+        return "Title: " + this.title + ", Author: " + this.author + ", Publisher: " + this.publisher + ", Original Price: " + this.oldprice + ", Discounted Price: " + this.newprice + ", URL: " + this.href;
     }
 }

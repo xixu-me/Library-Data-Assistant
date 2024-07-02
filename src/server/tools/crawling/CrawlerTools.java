@@ -30,7 +30,7 @@ public class CrawlerTools {
 				while ((info = read.readLine()) != null)
 					buf.append(info);
 			} else
-				System.out.println("出错：" + code);
+				System.out.println("Error! Response code: " + code + ".");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
