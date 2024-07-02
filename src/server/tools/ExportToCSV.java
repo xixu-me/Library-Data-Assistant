@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class ExportToCSV {
     public static void to() {
-        String outputFile = "图书信息.csv";
+        String outputFile = "Library Data.csv";
         try (Connection connection = DBConnection.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM book");

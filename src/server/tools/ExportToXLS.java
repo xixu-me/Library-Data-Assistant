@@ -15,7 +15,7 @@ public class ExportToXLS {
         try (Connection connection = DBConnection.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("SELECT * FROM book");) {
-            WritableWorkbook book = Workbook.createWorkbook(new File("图书信息.xls"));
+            WritableWorkbook book = Workbook.createWorkbook(new File("Library Data.xls"));
             WritableSheet sheet = book.createSheet("sheet1", 0);
             Label label = new Label(0, 0, "title");
             sheet.addCell(label);
