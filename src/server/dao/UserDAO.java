@@ -10,7 +10,7 @@ import server.vo.User;
 
 public class UserDAO {
 	public static User get(String userName) throws Exception {
-		String sql = "SELECT * FROM user WHERE userName=?";
+		String sql = "SELECT * FROM usr WHERE userName=?";
 		try (Connection con = DBConnection.getConnection();
 				PreparedStatement pst = con.prepareStatement(sql)) {
 			pst.setString(1, userName);
