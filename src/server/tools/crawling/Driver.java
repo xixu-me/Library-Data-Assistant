@@ -10,6 +10,7 @@ public class Driver {
     public static void crawl() {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         try {
+            System.out.println("Crawling started...");
             for (int i = 1; i <= 5; i++) {
                 String url = URL_PREFIX + i;
                 executor.submit(new NewsThread(url));
