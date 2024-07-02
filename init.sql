@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS
         title VARCHAR(255) NOT NULL PRIMARY KEY,
         author VARCHAR(255) NOT NULL,
         publisher VARCHAR(255),
-        oldprice DECIMAL(10, 2),
-        newprice DECIMAL(10, 2),
+        originalprice DECIMAL(10, 2),
+        discountedprice DECIMAL(10, 2),
         href VARCHAR(255)
     );
 

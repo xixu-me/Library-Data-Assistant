@@ -215,7 +215,7 @@ public class Client {
 					System.out.println("Please enter the publisher:");
 					break;
 				case 4:
-					sql = "SELECT * FROM book WHERE oldprice = ?";
+					sql = "SELECT * FROM book WHERE originalprice = ?";
 					System.out.println("Please enter the price:");
 					break;
 				case 5:
@@ -233,11 +233,12 @@ public class Client {
 					String title = rs.getString(1);
 					String author = rs.getString(2);
 					String pubilsher = rs.getString(3);
-					String oldprice = rs.getString(4);
-					String newprice = rs.getString(5);
+					String originalprice = rs.getString(4);
+					String discountedprice = rs.getString(5);
 					String url = rs.getString(6);
 					System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + pubilsher
-							+ ", Original Price: " + oldprice + ", Discounted Price: " + newprice + ", URL: " + url);
+							+ ", Original Price: " + originalprice + ", Discounted Price: " + discountedprice
+							+ ", URL: " + url);
 				}
 				System.out.println("Querying ended!");
 			}
@@ -321,14 +322,14 @@ public class Client {
 
 	private static void updatePrice(String title) throws Exception {
 		System.out.println("Please enter the modified price:");
-		String newPrice = scan.nextLine();
-		String sqlUpdateOldPrice = "UPDATE book SET oldprice = newprice WHERE title = ?";
-		ps = con.prepareStatement(sqlUpdateOldPrice);
+		String discountedPrice = scan.nextLine();
+		String sqlUpdateOriginalPrice = "UPDATE book SET originalprice = discountedprice WHERE title = ?";
+		ps = con.prepareStatement(sqlUpdateOriginalPrice);
 		ps.setString(1, title);
 		ps.executeUpdate();
-		String sqlUpdateNewPrice = "UPDATE book SET newprice = ? WHERE title = ?";
-		ps = con.prepareStatement(sqlUpdateNewPrice);
-		ps.setString(1, newPrice);
+		String sqlUpdateDiscountedPrice = "UPDATE book SET discountedprice = ? WHERE title = ?";
+		ps = con.prepareStatement(sqlUpdateDiscountedPrice);
+		ps.setString(1, discountedPrice);
 		ps.setString(2, title);
 		int affectedRows = ps.executeUpdate();
 		if (affectedRows > 0) {

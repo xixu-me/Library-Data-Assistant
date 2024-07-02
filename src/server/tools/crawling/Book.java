@@ -4,19 +4,20 @@ public class Book {
     private String title;
     private String author;
     private String publisher;
-    private double oldprice;
-    private double newprice;
+    private double originalprice;
+    private double discountedprice;
     private String href;
 
     public Book() {
     }
 
-    public Book(String title, String author, String publisher, double oldprice, double newprice, String href) {
+    public Book(String title, String author, String publisher, double originalprice, double discountedprice,
+            String href) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.oldprice = oldprice;
-        this.newprice = newprice;
+        this.originalprice = originalprice;
+        this.discountedprice = discountedprice;
         this.href = href;
     }
 
@@ -44,20 +45,20 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public double getOldprice() {
-        return oldprice;
+    public double getOriginalPrice() {
+        return originalprice;
     }
 
-    public void setOldprice(double oldprice) {
-        this.oldprice = oldprice;
+    public void setOriginalPrice(double originalprice) {
+        this.originalprice = originalprice;
     }
 
-    public double getNewprice() {
-        return newprice;
+    public double getDiscountedPrice() {
+        return discountedprice;
     }
 
-    public void setNewprice(double newprice) {
-        this.newprice = newprice;
+    public void setDiscountedPrice(double discountedprice) {
+        this.discountedprice = discountedprice;
     }
 
     public String getHref() {
@@ -71,6 +72,7 @@ public class Book {
     @Override
     public String toString() {
         return "Title: " + this.title + ", Author: " + this.author + ", Publisher: " + this.publisher
-                + ", Original Price: " + this.oldprice + ", Discounted Price: " + this.newprice + ", URL: " + this.href;
+                + ", Original Price: " + this.originalprice + ", Discounted Price: " + this.discountedprice + ", URL: "
+                + this.href;
     }
 }

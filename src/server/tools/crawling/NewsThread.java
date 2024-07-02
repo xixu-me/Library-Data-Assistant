@@ -37,9 +37,9 @@ public class NewsThread implements Runnable {
                     String oprice = bookElement.select(".price_r").text();
                     String nprice = bookElement.select(".price_n").first().text();
                     String href = bookElement.select(".name a").attr("href");
-                    double oldprice = Double.parseDouble(oprice.substring(1));
-                    double newprice = Double.parseDouble(nprice.substring(1));
-                    insertBook(con, title, author, publisher, oldprice, newprice, href);
+                    double originalprice = Double.parseDouble(oprice.substring(1));
+                    double discountedprice = Double.parseDouble(nprice.substring(1));
+                    insertBook(con, title, author, publisher, originalprice, discountedprice, href);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -49,15 +49,15 @@ public class NewsThread implements Runnable {
         }
     }
 
-    private void insertBook(Connection con, String title, String author, String publisher, double oldprice,
-            double newprice, String href) throws SQLException {
+    private void insertBook(Connection con, String title, String author, String publisher, double originalprice,
+            double discountedprice, String href) throws SQLException {
         String sql = "INSERT INTO book VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, title);
             ps.setString(2, author);
             ps.setString(3, publisher);
-            ps.setDouble(4, oldprice);
-            ps.setDouble(5, newprice);
+            ps.setDouble(4, originalprice);
+            ps.setDouble(5, discountedprice);
             ps.setString(6, href);
             ps.executeUpdate();
         }
