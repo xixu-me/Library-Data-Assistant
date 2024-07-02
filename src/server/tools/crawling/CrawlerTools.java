@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class CrawlerTools {
 	public static String get(String urlStr, String charset) throws IOException {
 		StringBuilder buf = new StringBuilder();
+		@SuppressWarnings("deprecation")
 		URL url = new URL(urlStr);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestProperty("User-Agent",
