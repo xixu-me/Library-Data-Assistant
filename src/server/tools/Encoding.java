@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class Encoding {
-	// 对指定的字符串进行md5编码
+
 	public static String md5(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -25,7 +25,6 @@ public class Encoding {
 		}
 	}
 
-	// 将指定的文件进行base64编码，返回编码字符串
 	public static String base64FromFile(String filePath) {
 		try {
 			byte[] fileBytes = Files.readAllBytes(Path.of(filePath));
@@ -36,7 +35,6 @@ public class Encoding {
 		}
 	}
 
-	// 将base64编码字符串还原为文件,文件路径及文件名为filePath
 	public static void base64ToFile(String base64Str, String filePath) {
 		try {
 			byte[] fileBytes = Base64.getDecoder().decode(base64Str);

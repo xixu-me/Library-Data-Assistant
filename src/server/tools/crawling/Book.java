@@ -3,11 +3,11 @@ package server.tools.crawling;
 public class Book {
 
     private String title;
-    private String author; // 作者
-    private String publisher; // 出版社
-    private double oldprice; // 出版时间
-    private double newprice; // 价格
-    private String href; // 图书详情url
+    private String author;
+    private String publisher;
+    private double oldprice;
+    private double newprice;
+    private String href;
 
     public Book() {
     }
@@ -133,6 +133,5 @@ public class Book {
         return "Book{title = " + title + ", author = " + author + ", publisher = " + publisher + ", oldprice = "
                 + oldprice + ", newprice = " + newprice + ", href = " + href + "}";
     }
-    // private String imageHref; //封面图片href地址
 
 }

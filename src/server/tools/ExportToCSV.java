@@ -16,7 +16,7 @@ public class ExportToCSV {
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM book");
                 FileWriter fileWriter = new FileWriter(outputFile)) {
 
-            // Write column names to the CSV file
+            
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 fileWriter.append(resultSet.getMetaData().getColumnName(i));
                 if (i < resultSet.getMetaData().getColumnCount()) {
@@ -25,7 +25,7 @@ public class ExportToCSV {
             }
             fileWriter.append("\n");
 
-            // Write data rows to the CSV file
+            
             while (resultSet.next()) {
                 for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                     fileWriter.append(resultSet.getString(i));

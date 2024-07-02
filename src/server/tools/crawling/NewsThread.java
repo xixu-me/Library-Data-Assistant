@@ -21,10 +21,9 @@ public class NewsThread implements Runnable {
     @Override
     public void run() {
 
-        // 对爬取结果解析
         String content = CrawlerTools.get(urlPath, "GB2312");
         Document doc = Jsoup.parse(content);
-        Elements elements = doc.select(".bang_wrapper .bang_list_box ul li"); // 所有新闻
+        Elements elements = doc.select(".bang_wrapper .bang_list_box ul li");
         Connection con = DBConnection.getConnection();
         PreparedStatement ps = null;
 
@@ -34,7 +33,7 @@ public class NewsThread implements Runnable {
             index++;
             if (index >= 20)
                 break;
-            // 每本图书的名称，作者，出版社，原价格、折后价格、详情url地址等信息
+
             String title = bookelement.select(".name a").text();
             Elements publisherInfoElements = bookelement.select(".publisher_info");
             String author = null;
@@ -52,7 +51,7 @@ public class NewsThread implements Runnable {
             String href = bookelement.select(".name a").attr("href");
             double oldprice = Double.parseDouble(oprice.substring(1));
             double newprice = Double.parseDouble(nprice.substring(1));
-            sql = "insert into book values(?,?,?,?,?,?)";// 书名，作者名，出版社，原价格，折后价格，详情url地址
+            sql = "insert into book values(?,?,?,?,?,?)";
             try {
                 ps = con.prepareStatement(sql);
                 ps.setString(1, title);

@@ -11,7 +11,6 @@ public class DBConnection {
 	private final static String user = "root";
 	private final static String password = "516849";
 
-	// 加载驱动
 	static {
 		try {
 			Class.forName(driverName);
