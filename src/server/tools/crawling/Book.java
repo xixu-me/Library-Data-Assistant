@@ -68,6 +68,7 @@ public class Book {
         this.href = href;
     }
 
+    @Override
     public String toString() {
         return "Title: " + this.title + ", Author: " + this.author + ", Publisher: " + this.publisher
                 + ", Original Price: " + this.oldprice + ", Discounted Price: " + this.newprice + ", URL: " + this.href;
