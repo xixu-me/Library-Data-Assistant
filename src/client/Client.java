@@ -2,9 +2,7 @@ package client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -17,7 +15,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -39,18 +36,30 @@ public class Client {
 	public static Statement statement = null;
 	public static ResultSet rs = null;
 
-	public static void main(String[] args) throws Exception, IOException {
-		String ip = "127.0.0.1";
+	public static void main(String[] args) {
+		try {
+			setupConnection();
+			if (!login()) {
+				System.out.println("Login failed, welcome to visit next time!");
+				System.exit(0);
+			}
+			handleUserChoices();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	private static void setupConnection() throws IOException {
+		String ip = "localhost";
 		int port = 9999;
 		socket = new Socket(ip, port);
-		InputStream is = socket.getInputStream();
-		buf = new BufferedReader(new InputStreamReader(is, "utf-8"));
-		OutputStream os = socket.getOutputStream();
-		write = new PrintWriter(new OutputStreamWriter(os, "utf-8"));
-		if (!login()) {
-			System.out.println("Login failed, welcome to visit next time!");
-			System.exit(0);
-		}
+		buf = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
+		write = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"), true);
+	}
+
+	private static void handleUserChoices() throws Exception {
 		int choose = menu();
 		while (choose != 8) {
 			switch (choose) {
@@ -80,54 +89,51 @@ public class Client {
 			}
 			choose = menu();
 		}
-		close();
 		System.out.println("You have exited the program. Welcome to use it next time!");
 	}
 
-	public static void close() throws Exception {
-		Map<String, Object> map = new HashMap<>();
-		map.put("code", 8);
-		String sendData = new Gson().toJson(map);
-		System.out.println("Send to server: " + sendData);
-		write.println(sendData);
-		write.flush();
-		if (write != null)
-			write.close();
-		if (buf != null)
-			buf.close();
-		if (socket != null)
-			socket.close();
+	public static void close() {
+		try {
+			Map<String, Object> map = new HashMap<>();
+			map.put("code", 8);
+			write.println(new Gson().toJson(map));
+			if (socket != null)
+				socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static boolean login() throws Exception {
 		for (int i = 1; i <= 3; i++) {
-			System.out.println("Please enter your user name:");
-			String userName = scan.nextLine();
-			System.out.println("Please enter your password:");
-			String passsord = scan.nextLine();
+			User user = getUserCredentials();
 			Map<String, Object> map = new HashMap<>();
 			map.put("code", 0);
-			User user = new User();
-			user.setUserName(userName);
-			user.setPassword(passsord);
-			Gson gson = new Gson();
-			map.put("data", gson.toJson(user));
-			String sendData = gson.toJson(map);
-			System.out.println("Send to server: " + sendData);
+			map.put("data", new Gson().toJson(user));
+			String sendData = new Gson().toJson(map);
 			String responseData = send(sendData);
-			System.out.println("Received the response from the server: " + responseData);
-			JsonElement element = JsonParser.parseString(responseData);
-			JsonObject obj = element.getAsJsonObject();
-			int returnCode = obj.get("code").getAsInt();
-			String returnData = obj.get("data").getAsString();
-			if (returnCode == 0)
-				System.out.println("Login failed: " + returnData);
+			JsonObject obj = JsonParser.parseString(responseData).getAsJsonObject();
+			if (obj.get("code").getAsInt() == 0)
+				System.out.println("Login failed: " + obj.get("data").getAsString());
 			else {
-				currentUser = gson.fromJson(returnData, User.class);
+				currentUser = new Gson().fromJson(obj.get("data").getAsString(), User.class);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private static User getUserCredentials() {
+		System.out.println("Please enter your user name:");
+		String userName = scan.nextLine();
+		System.out.println("Please enter your password:");
+		String password = scan.nextLine();
+		return new User(userName, password);
+	}
+
+	public static String send(String data) throws Exception {
+		write.println(data);
+		return buf.readLine();
 	}
 
 	public static int menu() {
@@ -145,13 +151,6 @@ public class Client {
 		int choose = scan.nextInt();
 		scan.nextLine();
 		return choose;
-	}
-
-	public static String send(String data) throws Exception {
-		write.println(data);
-		write.flush();
-		String response = buf.readLine();
-		return response;
 	}
 
 	private static void openConnection() {
