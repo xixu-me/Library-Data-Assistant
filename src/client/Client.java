@@ -124,7 +124,7 @@ public class Client {
 	}
 
 	private static User getUserCredentials() {
-		System.out.println("Please enter your user name:");
+		System.out.println("Please enter your username:");
 		String userName = scan.nextLine();
 		System.out.println("Please enter your password:");
 		String password = scan.nextLine();
